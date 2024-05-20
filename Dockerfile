@@ -33,7 +33,12 @@ RUN apk --no-cache --update \
     php83-intl \
     php83-mbstring \
     php83-gettext \
-    php83-exif
+    php83-exif \
+	php83-pear \
+	php83-dev \
+	gcc \
+	musl-dev \
+	make
 	
 RUN pecl install xdebug && \
 	docker-php-ext-enable xdebug
