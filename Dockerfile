@@ -39,16 +39,19 @@ RUN apk --no-cache --update \
 	gcc \
 	musl-dev \
 	make \
-	php83-redis
+	php83-pecl-redis \
+	php83-pecl-xdebug \
+	
+	
 
 # RUN apk add --update --no-cache --virtual .build-deps ${PHPIZE_DEPS} \
 #   && pecl install xdebug \
 #   && docker-php-ext-enable xdebug \
 #   && apk del .build-deps
   
-RUN mkdir -p /usr/src/php/ext/xdebug \
-    && curl -fsSL https://pecl.php.net/get/xdebug | tar xvz -C "/usr/src/php/ext/xdebug" --strip 1 \
-    && docker-php-ext-install xdebug
+# RUN mkdir -p /usr/src/php/ext/xdebug \
+#    && curl -fsSL https://pecl.php.net/get/xdebug | tar xvz -C "/usr/src/php/ext/xdebug" --strip 1 \
+#    && docker-php-ext-install xdebug
   
 # RUN pecl install xdebug && \
 # 	docker-php-ext-enable xdebug
@@ -58,16 +61,14 @@ RUN mkdir -p /usr/src/php/ext/xdebug \
 #    docker-php-ext-enable redis
 
 
-RUN apk --no-cache --virtual .build-deps \
+RUN apk --no-cache  \
 	libxml2-dev \
 	shadow \
 	autoconf \
 	g++ \
 	make \
 	&& apk add --no-cache imagemagick-dev imagemagick libjpeg-turbo libgomp freetype-dev \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
-    && apk del .build-deps
+    php83-pecl-imagick
 
 # Enable apache modules
 RUN a2enmod rewrite headers	
