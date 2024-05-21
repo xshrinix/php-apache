@@ -81,7 +81,7 @@ COPY ./php/php.ini /usr/local/etc/php/php.ini
 COPY ./php/ixed.8.3.lin /var/www/html/ixed.8.3.lin
 COPY ./www/perm.sh /var/www/html/perm.sh
 
-MKDIR /var/www/html/dss
+RUN mkdir /var/www/html/dss
 COPY ./dss/index.php /var/www/html/dss/index.php
 
 expose 8081 8443
