@@ -71,7 +71,9 @@ RUN apk --no-cache --update add imagemagick-dev imagemagick libjpeg-turbo libgom
     php83-pecl-imagick
 
 # Enable apache modules
-RUN a2enmod rewrite headers	
+# RUN a2enmod rewrite headers	
+RUN echo "LoadModule rewrite_module modules/mod_rewrite.so" >> /usr/local/apache2/conf/httpd.conf
+
 
 COPY ./vhosts/default.conf /etc/apache2/sites-enabled
 COPY ./php/php.ini /usr/local/etc/php/php.ini
