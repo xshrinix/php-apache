@@ -62,12 +62,12 @@ RUN apk --no-cache --update \
 
 
 RUN apk --no-cache  \
-	libxml2-dev \
+	--update \
+	add libxml2-dev \
 	shadow \
 	autoconf \
-	g++ \
-	make \
-	&& apk add --no-cache imagemagick-dev imagemagick libjpeg-turbo libgomp freetype-dev \
+	g++
+RUN apk --no-cache --update add imagemagick-dev imagemagick libjpeg-turbo libgomp freetype-dev \
     php83-pecl-imagick
 
 # Enable apache modules
