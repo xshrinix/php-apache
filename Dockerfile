@@ -41,11 +41,14 @@ RUN apk --no-cache --update \
 	make \
 	php83-redis
 
-
-RUN apk add --update --no-cache --virtual .build-deps ${PHPIZE_DEPS} \
-  && pecl install xdebug \
-  && docker-php-ext-enable xdebug \
-  && apk del .build-deps
+# RUN apk add --update --no-cache --virtual .build-deps ${PHPIZE_DEPS} \
+#   && pecl install xdebug \
+#   && docker-php-ext-enable xdebug \
+#   && apk del .build-deps
+  
+RUN mkdir -p /usr/src/php/ext/xdebug \
+    && curl -fsSL https://pecl.php.net/get/xdebug | tar xvz -C "/usr/src/php/ext/xdebug" --strip 1 \
+    && docker-php-ext-install xdebug
   
 # RUN pecl install xdebug && \
 # 	docker-php-ext-enable xdebug
