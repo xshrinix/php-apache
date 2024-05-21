@@ -42,11 +42,10 @@ RUN apk --no-cache --update \
 	php83-redis
 
 
-RUN apk add --update \
-  $PHPIZE_DEPS \
+RUN apk add --update --no-cache --virtual .build-deps ${PHPIZE_DEPS} \
   && pecl install xdebug \
   && docker-php-ext-enable xdebug \
-  && rm -rf /var/cache/apk/*
+  && apk del .build-deps
   
 # RUN pecl install xdebug && \
 # 	docker-php-ext-enable xdebug
