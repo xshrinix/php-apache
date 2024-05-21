@@ -40,7 +40,7 @@ RUN apk --no-cache --update \
 	musl-dev \
 	make \
 	php83-pecl-redis \
-	php83-pecl-xdebug \
+	php83-pecl-xdebug
 	
 	
 
