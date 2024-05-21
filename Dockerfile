@@ -38,14 +38,22 @@ RUN apk --no-cache --update \
 	php83-dev \
 	gcc \
 	musl-dev \
-	make
-	
-RUN pecl install xdebug && \
-	docker-php-ext-enable xdebug
+	make \
+	php83-redis
+
+
+RUN apk add --update \
+  $PHPIZE_DEPS \
+  && pecl install xdebug \
+  && docker-php-ext-enable xdebug \
+  && rm -rf /var/cache/apk/*
+  
+# RUN pecl install xdebug && \
+# 	docker-php-ext-enable xdebug
 	
 # Install redis
-RUN pecl install redis-5.1.1 && \
-    docker-php-ext-enable redis
+#RUN pecl install redis-5.1.1 && \
+#    docker-php-ext-enable redis
 
 
 RUN apk --no-cache --virtual .build-deps \
