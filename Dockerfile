@@ -72,10 +72,11 @@ RUN apk --no-cache --update add imagemagick-dev imagemagick libjpeg-turbo libgom
 
 # Enable apache modules
 # RUN a2enmod rewrite headers	
-RUN echo "LoadModule rewrite_module modules/mod_rewrite.so" >> /etc/httpd/conf/httpd.conf
+# RUN echo "LoadModule rewrite_module modules/mod_rewrite.so" >> /etc/httpd/conf/httpd.conf
+# RUN ls /etc/apache/conf
 
 
-COPY ./vhosts/default.conf /etc/apache2/sites-enabled
+# COPY ./vhosts/default.conf /etc/apache2/sites-enabled
 COPY ./php/php.ini /usr/local/etc/php/php.ini
 COPY ./php/ixed.8.3.lin /var/www/html/ixed.8.3.lin
 COPY ./www/perm.sh /var/www/html/perm.sh
