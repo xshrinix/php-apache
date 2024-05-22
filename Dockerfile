@@ -1,82 +1,87 @@
-FROM alpine:3.19
+FROM php:8.3-apache
 
-RUN apk --no-cache --update \
-    add apache2 \
-    apache2-ssl \
-    curl \
-	php83-apache2 \
-    php83-bcmath \
-    php83-bz2 \
-    php83-calendar \
-    php83-common \
-    php83-ctype \
-    php83-curl \
-    php83-dom \
-    php83-gd \
-    php83-iconv \
-    php83-mbstring \
-    php83-mysqli \
-    php83-mysqlnd \
-    php83-openssl \
-    php83-pdo_mysql \
-    php83-pdo_pgsql \
-    php83-pdo_sqlite \
-    php83-phar \
-    php83-session \
-    php83-xml \
-	nano \
-	wget \
-	git \
-    php83-tokenizer \
-    php83-json \
-    php83-zip \
-    php83-intl \
-    php83-mbstring \
-    php83-gettext \
-    php83-exif \
-	php83-pear \
-	php83-dev \
-	gcc \
-	musl-dev \
-	make \
-	php83-pecl-redis \
-	php83-pecl-xdebug
-	
-	
 
-# RUN apk add --update --no-cache --virtual .build-deps ${PHPIZE_DEPS} \
-#   && pecl install xdebug \
-#   && docker-php-ext-enable xdebug \
-#   && apk del .build-deps
-  
-# RUN mkdir -p /usr/src/php/ext/xdebug \
-#    && curl -fsSL https://pecl.php.net/get/xdebug | tar xvz -C "/usr/src/php/ext/xdebug" --strip 1 \
-#    && docker-php-ext-install xdebug
-  
-# RUN pecl install xdebug && \
-# 	docker-php-ext-enable xdebug
-	
+# Surpresses debconf complaints of trying to install apt packages interactively
+# https://github.com/moby/moby/issues/4032#issuecomment-192327844
+ARG DEBIAN_FRONTEND=noninteractive
+
+
+# Update
+RUN apt-get -y update --fix-missing && \
+    apt-get upgrade -y && \
+    apt-get --no-install-recommends install -y apt-utils && \
+    rm -rf /var/lib/apt/lists/*
+
+
+# Install useful tools and install important libaries
+RUN apt-get -y update && \
+    apt-get -y --no-install-recommends install nano wget \
+dialog \
+libsqlite3-dev \
+libsqlite3-0 && \
+    apt-get -y --no-install-recommends install default-mysql-client \
+zlib1g-dev \
+libzip-dev \
+libicu-dev && \
+    apt-get -y --no-install-recommends install --fix-missing apt-utils \
+build-essential \
+git \
+curl \
+libonig-dev && \ 
+    apt-get -y --no-install-recommends install --fix-missing libcurl4 \
+libcurl4-openssl-dev \
+zip \
+openssl && \
+    rm -rf /var/lib/apt/lists/* && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install xdebug
+RUN pecl install xdebug-2.8.0 && \
+    docker-php-ext-enable xdebug
+
 # Install redis
-#RUN pecl install redis-5.1.1 && \
-#    docker-php-ext-enable redis
+RUN pecl install redis-5.1.1 && \
+    docker-php-ext-enable redis
+
+# Install imagick
+RUN apt-get update && \
+    apt-get -y --no-install-recommends install --fix-missing libmagickwand-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    pecl install imagick && \
+    docker-php-ext-enable imagick
+
+# Other PHP7 Extensions
+
+RUN docker-php-ext-install pdo_mysql && \
+    docker-php-ext-install pdo_sqlite && \
+    docker-php-ext-install mysqli && \
+    docker-php-ext-install curl && \
+    docker-php-ext-install tokenizer && \
+    docker-php-ext-install json && \
+    docker-php-ext-install zip && \
+    docker-php-ext-install -j$(nproc) intl && \
+    docker-php-ext-install mbstring && \
+    docker-php-ext-install gettext && \
+    docker-php-ext-install exif
 
 
-RUN apk --no-cache  \
-	--update \
-	add libxml2-dev \
-	shadow \
-	autoconf \
-	g++
-RUN apk --no-cache --update add imagemagick-dev imagemagick libjpeg-turbo libgomp freetype-dev \
-    php83-pecl-imagick
+# Install Freetype 
+RUN apt-get -y update && \
+    apt-get --no-install-recommends install -y libfreetype6-dev \
+libjpeg62-turbo-dev \
+libpng-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg && \
+    docker-php-ext-install gd
 
 # Enable apache modules
-# RUN a2enmod rewrite headers	
-# RUN echo "LoadModule rewrite_module modules/mod_rewrite.so" >> /etc/httpd/conf/httpd.conf
-# RUN ls /etc/apache/conf
+RUN a2enmod rewrite headers
+
+# Cleanup
+RUN rm -rf /usr/src/*
 
 
-# COPY ./vhosts/default.conf /etc/apache2/sites-enabled
+COPY ./vhosts/default.conf /etc/apache2/sites-enabled
 COPY ./php/php.ini /usr/local/etc/php/php.ini
 COPY ./php/ixed.8.3.lin /var/www/html/ixed.8.3.lin
 COPY ./www/perm.sh /var/www/html/perm.sh
@@ -87,6 +92,3 @@ COPY ./dss/index.php /var/www/html/dss/index.php
 expose 8081 8443
 
 ENTRYPOINT ["/perm.sh"]
-
-
-
