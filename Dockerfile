@@ -91,6 +91,6 @@ COPY ./www/perm.sh /var/www/html/perm.sh
 RUN mkdir /var/www/html/dss
 COPY ./dss/index.php /var/www/html/dss/index.php
 
-expose 8081 8443
+expose 80 443
 
 ENTRYPOINT ["/perm.sh"]
