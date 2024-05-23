@@ -62,7 +62,8 @@ RUN docker-php-ext-install -j$(nproc) intl
 RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install gettext
 RUN docker-php-ext-install exif
-RUN docker-php-ext-install tokenizer
+# RUN docker-php-ext-install tokenizer
+RUN apt-get install -y php82-pecl-tokenizer
 
 
 # Install Freetype 
