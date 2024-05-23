@@ -56,12 +56,14 @@ RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install pdo_sqlite
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install curl
-# RUN docker-php-ext-install json
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install -j$(nproc) intl
 RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install gettext
 RUN docker-php-ext-install exif
+
+# Commenting below extension as it is already compiled and enabled on new php versions
+# RUN docker-php-ext-install json
 # RUN docker-php-ext-install tokenizer
 
 
