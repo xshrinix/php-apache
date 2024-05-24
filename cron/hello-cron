@@ -1,0 +1,29 @@
+0 */8 * * *     root php /var/www/html/dss/console/yii screenshots/delete
+0 1 * * *       root php /var/www/html/dss/console/yii notifications/generate-expiry-notifications
+0 6 * * *      root php /var/www/html/dss/console/yii account-transaction/start
+0 */20 * * *   root php /var/www/html/dss/console/yii thumbnail/process
+0 */1 * * *     root php /var/www/html/dss/console/yii weather/weather
+0 0 * * *       root php /var/www/html/dss/console/yii cleanup/logs
+*/10 * * * *   root php /var/www/html/dss/console/yii on-off-percentage
+#*/1 * * * *   root php /var/www/html/dss/console/yii calculate-impressions/calculate
+*/20 * * * *   root php /var/www/html/dss/console/yii reports/reports
+*/20 * * * *   root php /var/www/html/dss/console/yii reports/report-expiry
+*/59 */23 * * *  root php /var/www/html/dss/console/yii logged-in-report/take-current-snapshot
+*/59 */23 * * *  root php /var/www/html/dss/console/yii backup/db-backup
+*/30 * * * *  root php /var/www/html/dss/console/yii auto-issue/index
+*/59 */23 * * *  root php /var/www/html/dss/console/yii cleanup-aler/send-alert
+*/59 */23 * * *  root php /var/www/html/dss/console/yii library-management/remove-unused-media
+*/59 */23 * * *  root php /var/www/html/dss/console/yii library-management/retire-content-cleanup
+*/59 */23 * * *  root php /var/www/html/dss/console/yii media-compatibility/run
+*/59 */23 * * *  root php /var/www/html/dss/console/yii media-conversion/convert
+
+
+
+
+
+
+
+
+
+
+

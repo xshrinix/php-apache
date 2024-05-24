@@ -96,7 +96,7 @@ expose 8081 3443
 RUN apt-get -y update && apt-get -y install cron
 
 # Copy hello-cron file to the cron.d directory
-COPY hello-cron /etc/cron.d/hello-cron
+COPY ./cron/hello-cron /etc/cron.d/hello-cron
  
 # Give execution rights on the cron job
 RUN chmod 0644 /etc/cron.d/hello-cron
