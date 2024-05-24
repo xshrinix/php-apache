@@ -111,4 +111,4 @@ RUN touch /var/log/cron.log
 CMD cron && tail -f /var/log/cron.log
 WORKDIR /var/www/html
 RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
-ENTRYPOINT ["perm.sh"]
+ENTRYPOINT ["./perm.sh"]
