@@ -89,7 +89,7 @@ COPY ./php/ixed.8.3.lin /var/www/html/ixed.8.3.lin
 COPY ./www/perm.sh /var/www/html/perm.sh
 
 RUN mkdir /var/www/html/dss
-COPY ./dss/index.php /var/www/html/dss/index.php
+COPY --chown=www-data:www-data ./dss/index.php /var/www/html/dss/index.php
 
 expose 8081 3443
 
@@ -110,6 +110,6 @@ RUN touch /var/log/cron.log
 # Run the command on container startup
 CMD cron && tail -f /var/log/cron.log
 WORKDIR /var/www/html
-RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
+RUN chgrp -R www-data:www-data /var/www/html && chmod -R g+rwx /var/www/html
 RUN chmod +x perm.sh
-ENTRYPOINT ["./perm.sh"]
+# ENTRYPOINT ["./perm.sh"]
