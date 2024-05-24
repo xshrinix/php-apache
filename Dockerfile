@@ -109,5 +109,6 @@ RUN touch /var/log/cron.log
  
 # Run the command on container startup
 CMD cron && tail -f /var/log/cron.log
-
-ENTRYPOINT ["/var/www/html/perm.sh"]
+WORKDIR /var/www/html
+RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
+ENTRYPOINT ["perm.sh"]
