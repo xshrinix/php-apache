@@ -93,31 +93,31 @@ COPY ./dss/index.php /var/www/html/dss/index.php
 
 expose 8081 3443
 
-RUN apt-get -y update && apt-get -y install cron
+# RUN apt-get -y update && apt-get -y install cron
 
 # Copy hello-cron file to the cron.d directory
-COPY ./cron/hello-cron /etc/cron.d/hello-cron
+# COPY ./cron/hello-cron /etc/cron.d/hello-cron
  
 # Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/hello-cron
+# RUN chmod 0644 /etc/cron.d/hello-cron
 
 # Apply cron job
-RUN crontab /etc/cron.d/hello-cron
+# RUN crontab /etc/cron.d/hello-cron
  
 # Create the log file to be able to run tail
-RUN touch /var/log/cron.log
+# RUN touch /var/log/cron.log
  
 WORKDIR /var/www/html
-RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
+# RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
 RUN chmod +x perm.sh
 
-RUN chgrp crontab /usr/bin/crontab
-RUN chmod g+s /usr/bin/crontab
+# RUN chgrp crontab /usr/bin/crontab
+# RUN chmod g+s /usr/bin/crontab
 
-RUN chmod 4774 -R /var/spool/cron
+# RUN chmod 4774 -R /var/spool/cron
 
-RUN chmod 600 /var/spool/cron/crontabs/*
-RUN chmod -R g+s /var/spool/cron
+# RUN chmod 600 /var/spool/cron/crontabs/*
+# RUN chmod -R g+s /var/spool/cron
 # Run the command on container startup
-CMD cron && tail -f /var/log/cron.log
+# CMD cron && tail -f /var/log/cron.log
 # ENTRYPOINT ["./perm.sh"]
