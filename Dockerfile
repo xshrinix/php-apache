@@ -112,4 +112,4 @@ CMD cron && tail -f /var/log/cron.log
 WORKDIR /var/www/html
 RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
 RUN chmod +x perm.sh
-ENTRYPOINT ["./perm.sh"]
+# ENTRYPOINT ["./perm.sh"]
