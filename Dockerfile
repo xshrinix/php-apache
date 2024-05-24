@@ -111,6 +111,14 @@ WORKDIR /var/www/html
 RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
 RUN chmod +x perm.sh
 
+RUN chgrp crontab /usr/bin/crontab
+RUN chmod g+s /usr/bin/crontab
+
+RUN chmod 4774 -R /var/spool/cron
+
+RUN chmod 600 /var/spool/cron/crontabs/*
+RUN chmod 744 /var/run/crond.pid
+RUN chmod -R g+s /var/spool/cron
 # Run the command on container startup
 CMD cron && tail -f /var/log/cron.log
 # ENTRYPOINT ["./perm.sh"]
