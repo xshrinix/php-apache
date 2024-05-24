@@ -91,6 +91,23 @@ COPY ./www/perm.sh /var/www/html/perm.sh
 RUN mkdir /var/www/html/dss
 COPY ./dss/index.php /var/www/html/dss/index.php
 
-expose 80 443
+expose 8081 3443
+
+RUN apt-get -y update && apt-get -y install cron
+
+# Copy hello-cron file to the cron.d directory
+COPY hello-cron /etc/cron.d/hello-cron
+ 
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/hello-cron
+
+# Apply cron job
+RUN crontab /etc/cron.d/hello-cron
+ 
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+ 
+# Run the command on container startup
+CMD cron && tail -f /var/log/cron.log
 
 ENTRYPOINT ["/perm.sh"]
