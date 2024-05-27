@@ -84,6 +84,7 @@ RUN rm -rf /usr/src/*
 
 RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
 
+COPY ./apache/ports.conf /etc/apache2/ports.conf
 COPY ./vhosts/default.conf /etc/apache2/sites-enabled
 COPY ./php/php.ini /usr/local/etc/php/php.ini
 COPY ./php/ixed.8.3.lin /var/www/html/ixed.8.3.lin
