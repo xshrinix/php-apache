@@ -82,6 +82,7 @@ RUN a2enmod rewrite headers
 # Cleanup
 RUN rm -rf /usr/src/*
 
+RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
 
 COPY ./vhosts/default.conf /etc/apache2/sites-enabled
 COPY ./php/php.ini /usr/local/etc/php/php.ini
@@ -91,7 +92,7 @@ COPY ./www/perm.sh /var/www/html/perm.sh
 RUN mkdir /var/www/html/dss
 COPY ./dss/index.php /var/www/html/dss/index.php
 
-expose 8081 3443
+EXPOSE 8080 8443
 
 # RUN apt-get -y update && apt-get -y install cron
 
@@ -108,7 +109,6 @@ expose 8081 3443
 # RUN touch /var/log/cron.log
  
 WORKDIR /var/www/html
-# RUN chgrp -R 0 /var/www/html && chmod -R g=u /var/www/html
 RUN chmod +x perm.sh
 
 # RUN chgrp crontab /usr/bin/crontab
